@@ -5,12 +5,16 @@ class CheckoutDialog extends StatefulWidget {
   final String itemCost;
   final String limit;
   final Image itemImage;
+  final Function(int value) addCallback;
+  final Function(int value) subtractCallback;
 
   CheckoutDialog({
     this.itemCost,
     this.itemImage,
     this.itemName,
     this.limit,
+    this.addCallback,
+    this.subtractCallback,
   });
 
   @override
@@ -18,6 +22,16 @@ class CheckoutDialog extends StatefulWidget {
 }
 
 class _CheckoutDialogState extends State<CheckoutDialog> {
+  int limit = 0;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.limit != null)
+      limit = int.parse(widget.limit);
+    else
+      limit = 9223372036854775807; // max value for a 64 bit number
+  }
+
   int currentCount = 0;
   @override
   Widget build(BuildContext context) {
@@ -42,30 +56,37 @@ class _CheckoutDialogState extends State<CheckoutDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               RaisedButton(
-                  color: Colors.red,
+                  color: currentCount > 0 ? Colors.red : Colors.grey,
                   child: Text(
                     "Sell",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      currentCount--;
-                    });
-                  }),
+                  onPressed: currentCount > 0
+                      ? () {
+                          widget.addCallback(int.parse(widget.itemCost));
+
+                          setState(() {
+                            currentCount--;
+                          });
+                        }
+                      : () {}),
               Container(
                 child: Text(currentCount.toString()),
               ),
               RaisedButton(
-                  color: Colors.green,
+                  color: (currentCount < limit) ? Colors.green : Colors.grey,
                   child: Text(
                     "Buy",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      currentCount++;
-                    });
-                  }),
+                  onPressed: (currentCount < limit)
+                      ? () {
+                          widget.subtractCallback(int.parse(widget.itemCost));
+                          setState(() {
+                            currentCount++;
+                          });
+                        }
+                      : () {}),
             ],
           )
         ],
