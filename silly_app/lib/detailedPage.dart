@@ -19,12 +19,12 @@ class _DetailedScreenState extends State<DetailedScreen> {
   void populateList() {
     itemList = [
       new Items.fromDetails(
-          itemName: "Jhola (CarryBag)",
-          worth: "0",
-          photo: Image.asset("assets/item/Jhola (CarryBag).png"),
-          addCallBack: addValue,
-          subCallBack: subValue,
-          limit: "1",
+        itemName: "Jhola (CarryBag)",
+        worth: "0",
+        photo: Image.asset("assets/item/Jhola (CarryBag).png"),
+        addCallBack: addValue,
+        subCallBack: subValue,
+        limit: "1",
       ),
       new Items.fromDetails(
         itemName: "Coca Cola",
@@ -65,7 +65,8 @@ class _DetailedScreenState extends State<DetailedScreen> {
         photo: Image.asset("assets/item/Video game.png"),
         addCallBack: addValue,
         subCallBack: subValue,
-      ),new Items.fromDetails(
+      ),
+      new Items.fromDetails(
         itemName: "Amazon Echo",
         worth: "90",
         photo: Image.asset("assets/item/Amazon Echo.png"),
@@ -113,10 +114,11 @@ class _DetailedScreenState extends State<DetailedScreen> {
         photo: Image.asset("assets/item/I Phone.png"),
         addCallBack: addValue,
         subCallBack: subValue,
-      ),new Items.fromDetails(
+      ),
+      new Items.fromDetails(
         itemName: "Kitten ",
         worth: "800",
-        photo: Image.asset("assets/item/Kitten .png"),
+        photo: Image.asset("assets/item/Kitten.png"),
         addCallBack: addValue,
         subCallBack: subValue,
       ),
@@ -161,7 +163,8 @@ class _DetailedScreenState extends State<DetailedScreen> {
         photo: Image.asset("assets/item/Luxary Wine.png"),
         addCallBack: addValue,
         subCallBack: subValue,
-      ),new Items.fromDetails(
+      ),
+      new Items.fromDetails(
         itemName: "Diamond Ring",
         worth: "10000",
         photo: Image.asset("assets/item/Diamond Ring.png"),
@@ -209,7 +212,8 @@ class _DetailedScreenState extends State<DetailedScreen> {
         photo: Image.asset("assets/item/ferrari.png"),
         addCallBack: addValue,
         subCallBack: subValue,
-      ),new Items.fromDetails(
+      ),
+      new Items.fromDetails(
         itemName: "Single Family Home",
         worth: "300000",
         photo: Image.asset("assets/item/Single Family Home.png"),
@@ -254,10 +258,11 @@ class _DetailedScreenState extends State<DetailedScreen> {
       new Items.fromDetails(
         itemName: "Rafale",
         worth: "91000000",
-        photo: Image.asset("assets/item/Rafale.png"),
+        photo: Image.asset("assets/item/rafale.png"),
         addCallBack: addValue,
         subCallBack: subValue,
-      ),new Items.fromDetails(
+      ),
+      new Items.fromDetails(
         itemName: "Formula 1 Car",
         worth: "15000000",
         photo: Image.asset("assets/item/Formula 1 Car.png"),
@@ -286,7 +291,6 @@ class _DetailedScreenState extends State<DetailedScreen> {
         subCallBack: subValue,
         limit: "8",
       ),
-
       new Items.fromDetails(
         itemName: "Boeing 747",
         worth: "158000000",
@@ -308,7 +312,8 @@ class _DetailedScreenState extends State<DetailedScreen> {
         photo: Image.asset("assets/item/Skyscraper.png"),
         addCallBack: addValue,
         subCallBack: subValue,
-      ),new Items.fromDetails(
+      ),
+      new Items.fromDetails(
         itemName: "Cruise Ship",
         worth: "930000000",
         photo: Image.asset("assets/item/Cruise Ship.png"),
@@ -354,7 +359,6 @@ class _DetailedScreenState extends State<DetailedScreen> {
         addCallBack: addValue,
         subCallBack: subValue,
       ),
-
     ];
   }
 
@@ -413,12 +417,13 @@ class _DetailedScreenState extends State<DetailedScreen> {
                   child: Card(
                     elevation: 3.0,
                     child: CheckoutDialog(
-                        addCallback: addValue,
-                        subtractCallback: subValue,
-                        itemName: itemList[index].itemName,
-                        itemCost: itemList[index].worth,
-                        itemImage: itemList[index].photo,
-                    limit: itemList[index].limit,),
+                      addCallback: addValue,
+                      subtractCallback: subValue,
+                      itemName: itemList[index].itemName,
+                      itemCost: itemList[index].worth,
+                      itemImage: itemList[index].photo,
+                      limit: itemList[index].limit,
+                    ),
                   ),
                 );
               },
