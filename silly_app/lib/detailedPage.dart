@@ -15,6 +15,8 @@ class DetailedScreen extends StatefulWidget {
 class _DetailedScreenState extends State<DetailedScreen> {
   int netWorthLeft;
   List<Items> itemList;
+  Map<String, int> valueMapper;
+  List<Widget> summaryWidgets = new List<Widget>();
 
   void populateList() {
     itemList = [
@@ -367,6 +369,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
     super.initState();
     populateList();
     netWorthLeft = int.parse(widget.characterToShow.net_worth);
+    valueMapper = new Map<String, int>();
   }
 
   void addValue(int value) {
@@ -379,6 +382,71 @@ class _DetailedScreenState extends State<DetailedScreen> {
     setState(() {
       netWorthLeft -= value;
     });
+  }
+
+  void addItemQty(String itemName) {
+    if (valueMapper.containsKey(itemName)) {
+      valueMapper[itemName] += 1;
+    } else {
+      valueMapper[itemName] = 1;
+    }
+
+    print(valueMapper);
+  }
+
+  void subItemQty(String itemName) {
+    if (valueMapper.containsKey(itemName)) {
+      valueMapper[itemName] -= 1;
+    }
+
+    print(valueMapper.entries);
+  }
+
+  void createSummary() {
+    valueMapper.entries.forEach((element) {
+      summaryWidgets.add(Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(element.key),
+            Text("x " + element.value.toString()),
+          ],
+        ),
+      ));
+    });
+    summaryWidgets.add(Divider(
+      height: 1,
+      color: Colors.black,
+    ));
+    summaryWidgets.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            "Subtotal",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "\$${int.parse(widget.characterToShow.net_worth) - netWorthLeft}",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    ));
+    summaryWidgets.add(Spacer());
+    summaryWidgets.add(RaisedButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+        summaryWidgets.clear();
+      },
+      child: Text(
+        "Okay",
+        style: TextStyle(color: Colors.white),
+      ),
+      color: const Color(0xFF1BC0C5),
+    ));
   }
 
   @override
@@ -419,6 +487,8 @@ class _DetailedScreenState extends State<DetailedScreen> {
                       child: Card(
                         elevation: 3.0,
                         child: CheckoutDialog(
+                          addQty: addItemQty,
+                          subQty: subItemQty,
                           addCallback: addValue,
                           subtractCallback: subValue,
                           itemName: itemList[index].itemName,
@@ -445,6 +515,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                         ),
                         RaisedButton(
                           onPressed: () {
+                            createSummary();
                             showGeneralDialog(
                                 context: context,
                                 barrierDismissible: true,
@@ -468,20 +539,7 @@ class _DetailedScreenState extends State<DetailedScreen> {
                                         padding: EdgeInsets.all(20),
                                         color: Colors.white,
                                         child: Column(
-                                          children: [
-                                            Text("something"),
-                                            RaisedButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(
-                                                "Okay",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              color: const Color(0xFF1BC0C5),
-                                            )
-                                          ],
+                                          children: summaryWidgets,
                                         ),
                                       ),
                                     ),
