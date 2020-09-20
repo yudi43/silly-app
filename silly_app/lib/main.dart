@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
       new Character.fromDetails(
         name: "Kylie Jenner",
         netWorth: "700000000",
-        photo: Image.asset("assets/character/Kylie Jenner.png"),
+        photo: Image.asset("assets/character/Kylie Jenner .png"),
       ),
       new Character.fromDetails(
         name: "JK Rowling",
