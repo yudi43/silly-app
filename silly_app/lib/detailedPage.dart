@@ -409,24 +409,123 @@ class _DetailedScreenState extends State<DetailedScreen> {
             ],
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: itemList.length,
-              itemBuilder: (BuildContext ctxt, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 3.0,
-                    child: CheckoutDialog(
-                      addCallback: addValue,
-                      subtractCallback: subValue,
-                      itemName: itemList[index].itemName,
-                      itemCost: itemList[index].worth,
-                      itemImage: itemList[index].photo,
-                      limit: itemList[index].limit,
+            child: Stack(
+              children: <Widget>[
+                ListView.builder(
+                  itemCount: itemList.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 3.0,
+                        child: CheckoutDialog(
+                          addCallback: addValue,
+                          subtractCallback: subValue,
+                          itemName: itemList[index].itemName,
+                          itemCost: itemList[index].worth,
+                          itemImage: itemList[index].photo,
+                          limit: itemList[index].limit,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    color: Colors.grey[300],
+                    height: 80,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          "Total Bill: \$${int.parse(widget.characterToShow.net_worth) - netWorthLeft}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        RaisedButton(
+                          onPressed: () {
+                            showGeneralDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                barrierLabel: MaterialLocalizations.of(context)
+                                    .modalBarrierDismissLabel,
+                                barrierColor: Colors.black45,
+                                transitionDuration:
+                                    const Duration(milliseconds: 200),
+                                pageBuilder: (BuildContext buildContext,
+                                    Animation animation,
+                                    Animation secondaryAnimation) {
+                                  return Scaffold(
+                                    body: Center(
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                10,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                80,
+                                        padding: EdgeInsets.all(20),
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            Text("something"),
+                                            RaisedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "Okay",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              color: const Color(0xFF1BC0C5),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(80.0)),
+                          padding: const EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xff000046),
+                                  Color(0xff1CB5E0)
+                                ],
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(80.0)),
+                            ),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                  maxHeight: 50,
+                                  minWidth: 88.0,
+                                  minHeight:
+                                      36.0), // min sizes for Material buttons
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                child: const Text(
+                                  'View Summary',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                );
-              },
+                )
+              ],
             ),
           ),
         ],
