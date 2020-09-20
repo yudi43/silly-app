@@ -164,11 +164,10 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('Choose a character'),
       ),
       body: Container(
-        child: ListView.builder(
-          itemCount: chars.length,
-          itemBuilder: (context, int index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
+        child: GridView.count(
+          crossAxisCount: 2,
+          children: List.generate(chars.length, (index) {
+            return Container(
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -180,19 +179,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 },
-                child: Container(
-                  color: Colors.grey,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Card(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(chars[index].name.toString()),
-                      Text("\$" + chars[index].net_worth.toString()),
+                      Flexible(
+                          flex: 1, child: Text(chars[index].name.toString())),
+                      Flexible(
+                        flex: 6,
+                        child: Container(
+                          child: chars[index].photo,
+                          // height: 50,
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.grey[300],
+                          child: Text(
+                            "\$" + chars[index].net_worth.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             );
-          },
+          }),
         ),
       ),
     );
