@@ -382,6 +382,29 @@ class _DetailedScreenState extends State<DetailedScreen> {
     setState(() {
       netWorthLeft -= value;
     });
+
+    if (netWorthLeft == 0) showBrokeAlert();
+  }
+
+  void showBrokeAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Alert!"),
+          content: Text(
+              "You have spent all of ${widget.characterToShow.name}'s money!"),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void addItemQty(String itemName) {
@@ -390,16 +413,12 @@ class _DetailedScreenState extends State<DetailedScreen> {
     } else {
       valueMapper[itemName] = 1;
     }
-
-    print(valueMapper);
   }
 
   void subItemQty(String itemName) {
     if (valueMapper.containsKey(itemName)) {
       valueMapper[itemName] -= 1;
     }
-
-    print(valueMapper.entries);
   }
 
   void createSummary() {
@@ -487,6 +506,8 @@ class _DetailedScreenState extends State<DetailedScreen> {
                       child: Card(
                         elevation: 3.0,
                         child: CheckoutDialog(
+                          canBuyMore:
+                              int.parse(itemList[index].worth) <= netWorthLeft,
                           addQty: addItemQty,
                           subQty: subItemQty,
                           addCallback: addValue,

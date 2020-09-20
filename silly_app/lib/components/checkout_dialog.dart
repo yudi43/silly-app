@@ -9,6 +9,7 @@ class CheckoutDialog extends StatefulWidget {
   final Function(int value) subtractCallback;
   final Function(String itemName) addQty;
   final Function(String itemName) subQty;
+  final bool canBuyMore;
 
   CheckoutDialog({
     this.itemCost,
@@ -19,6 +20,7 @@ class CheckoutDialog extends StatefulWidget {
     this.subtractCallback,
     this.addQty,
     this.subQty,
+    this.canBuyMore,
   });
 
   @override
@@ -78,12 +80,14 @@ class _CheckoutDialogState extends State<CheckoutDialog> {
                 child: Text(currentCount.toString()),
               ),
               RaisedButton(
-                  color: (currentCount < limit) ? Colors.green : Colors.grey,
+                  color: (currentCount < limit && widget.canBuyMore)
+                      ? Colors.green
+                      : Colors.grey,
                   child: Text(
                     "Buy",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: (currentCount < limit)
+                  onPressed: (currentCount < limit && widget.canBuyMore)
                       ? () {
                           widget.addQty(widget.itemName);
                           widget.subtractCallback(int.parse(widget.itemCost));
