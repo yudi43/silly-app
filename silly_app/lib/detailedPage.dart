@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:silly_app/Model/character.dart';
 import 'package:silly_app/Model/item.dart';
 import 'package:silly_app/components/checkout_dialog.dart';
+
+import 'Model/character.dart';
 
 class DetailedScreen extends StatefulWidget {
   final Character characterToShow;
 
   DetailedScreen({this.characterToShow});
-
   @override
   _DetailedScreenState createState() => _DetailedScreenState();
 }
@@ -471,144 +471,159 @@ class _DetailedScreenState extends State<DetailedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.characterToShow.name),
-      ),
-      body: Container(
-          child: Column(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Container(
-                width: 200,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: widget.characterToShow.photo,
-                ),
-              ),
-              Text(
-                "\$" + netWorthLeft.toString(),
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              )
-            ],
-          ),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                ListView.builder(
-                  itemCount: itemList.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 3.0,
-                        child: CheckoutDialog(
-                          canBuyMore:
-                              int.parse(itemList[index].worth) <= netWorthLeft,
-                          addQty: addItemQty,
-                          subQty: subItemQty,
-                          addCallback: addValue,
-                          subtractCallback: subValue,
-                          itemName: itemList[index].itemName,
-                          itemCost: itemList[index].worth,
-                          itemImage: itemList[index].photo,
-                          limit: itemList[index].limit,
+        body: DefaultTabController(
+      length: 2,
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(widget.characterToShow.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          )),
+                      Text(
+                        "\$" + netWorthLeft.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
-                    );
-                  },
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    color: Colors.grey[300],
-                    height: 80,
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          "Total Bill: \$${int.parse(widget.characterToShow.net_worth) - netWorthLeft}",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                    ],
+                  ),
+                  background: widget.characterToShow.photo),
+            ),
+          ];
+        },
+        body: Container(
+            child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Stack(
+                children: <Widget>[
+                  ListView.builder(
+                    itemCount: itemList.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 3.0,
+                          child: CheckoutDialog(
+                            canBuyMore: int.parse(itemList[index].worth) <=
+                                netWorthLeft,
+                            addQty: addItemQty,
+                            subQty: subItemQty,
+                            addCallback: addValue,
+                            subtractCallback: subValue,
+                            itemName: itemList[index].itemName,
+                            itemCost: itemList[index].worth,
+                            itemImage: itemList[index].photo,
+                            limit: itemList[index].limit,
+                          ),
                         ),
-                        RaisedButton(
-                          onPressed: () {
-                            createSummary();
-                            showGeneralDialog(
-                                context: context,
-                                barrierDismissible: true,
-                                barrierLabel: MaterialLocalizations.of(context)
-                                    .modalBarrierDismissLabel,
-                                barrierColor: Colors.black45,
-                                transitionDuration:
-                                    const Duration(milliseconds: 200),
-                                pageBuilder: (BuildContext buildContext,
-                                    Animation animation,
-                                    Animation secondaryAnimation) {
-                                  return Scaffold(
-                                    body: Center(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                10,
-                                        height:
-                                            MediaQuery.of(context).size.height -
-                                                80,
-                                        padding: EdgeInsets.all(20),
-                                        color: Colors.white,
-                                        child: Column(
-                                          children: summaryWidgets,
+                      );
+                    },
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      color: Colors.grey[300],
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            "Total Bill: \$${int.parse(widget.characterToShow.net_worth) - netWorthLeft}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              createSummary();
+                              showGeneralDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  barrierLabel:
+                                      MaterialLocalizations.of(context)
+                                          .modalBarrierDismissLabel,
+                                  barrierColor: Colors.black45,
+                                  transitionDuration:
+                                      const Duration(milliseconds: 200),
+                                  pageBuilder: (BuildContext buildContext,
+                                      Animation animation,
+                                      Animation secondaryAnimation) {
+                                    return Scaffold(
+                                      body: Center(
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              10,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height -
+                                              80,
+                                          padding: EdgeInsets.all(20),
+                                          color: Colors.white,
+                                          child: Column(
+                                            children: summaryWidgets,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                });
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(80.0)),
-                          padding: const EdgeInsets.all(0.0),
-                          child: Ink(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: <Color>[
-                                  Color(0xff000046),
-                                  Color(0xff1CB5E0)
-                                ],
+                                    );
+                                  });
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(80.0)),
+                            padding: const EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    Color(0xffcc2b5e),
+                                    Color(0xff753a88)
+                                  ],
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(80.0)),
                               ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(80.0)),
-                            ),
-                            child: Container(
-                              constraints: const BoxConstraints(
-                                  maxHeight: 50,
-                                  minWidth: 88.0,
-                                  minHeight:
-                                      36.0), // min sizes for Material buttons
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                child: const Text(
-                                  'View Summary',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                    maxHeight: 50,
+                                    minWidth: 88.0,
+                                    minHeight:
+                                        36.0), // min sizes for Material buttons
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                  child: const Text(
+                                    'View Summary',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
-      )),
-    );
+          ],
+        )),
+      ),
+    ));
   }
 }
