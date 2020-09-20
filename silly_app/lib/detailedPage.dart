@@ -455,17 +455,38 @@ class _DetailedScreenState extends State<DetailedScreen> {
       ),
     ));
     summaryWidgets.add(Spacer());
-    summaryWidgets.add(RaisedButton(
-      onPressed: () {
-        Navigator.of(context).pop();
-        summaryWidgets.clear();
-      },
-      child: Text(
-        "Okay",
-        style: TextStyle(color: Colors.white),
+    summaryWidgets.add(
+      RaisedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+          summaryWidgets.clear();
+        },
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        padding: const EdgeInsets.all(0.0),
+        child: Ink(
+          decoration: const BoxDecoration(
+            color: Color(0xff9747FF),
+            borderRadius: BorderRadius.all(Radius.circular(80.0)),
+          ),
+          child: Container(
+            constraints: const BoxConstraints(
+                maxHeight: 50,
+                minWidth: 88.0,
+                minHeight: 36.0), // min sizes for Material buttons
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: const Text(
+                'Okay',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
       ),
-      color: const Color(0xFF1BC0C5),
-    ));
+    );
   }
 
   @override
@@ -504,12 +525,12 @@ class _DetailedScreenState extends State<DetailedScreen> {
           ];
         },
         body: Container(
-            child: Column(
+            child: Stack(
           children: <Widget>[
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  ListView.builder(
+            Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
                     itemCount: itemList.length,
                     itemBuilder: (BuildContext ctxt, int index) {
                       return Padding(
@@ -532,98 +553,91 @@ class _DetailedScreenState extends State<DetailedScreen> {
                       );
                     },
                   ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      color: Colors.grey[300],
-                      height: 80,
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Text(
-                            "Total Bill: \$${int.parse(widget.characterToShow.net_worth) - netWorthLeft}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          RaisedButton(
-                            onPressed: () {
-                              createSummary();
-                              showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.black45,
-                                  transitionDuration:
-                                      const Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext buildContext,
-                                      Animation animation,
-                                      Animation secondaryAnimation) {
-                                    return Scaffold(
-                                      body: Center(
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              10,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height -
-                                              80,
-                                          padding: EdgeInsets.all(20),
-                                          color: Colors.white,
-                                          child: Column(
-                                            children: summaryWidgets,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  });
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(80.0)),
-                            padding: const EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: <Color>[
-                                    Color(0xffcc2b5e),
-                                    Color(0xff753a88)
-                                  ],
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(80.0)),
-                              ),
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                    maxHeight: 50,
-                                    minWidth: 88.0,
-                                    minHeight:
-                                        36.0), // min sizes for Material buttons
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                  child: const Text(
-                                    'View Summary',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white),
+                ),
+                Container(
+                  height: 80,
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                color: Colors.grey[300],
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      "Total Bill: \$${int.parse(widget.characterToShow.net_worth) - netWorthLeft}",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        createSummary();
+                        showGeneralDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            barrierLabel: MaterialLocalizations.of(context)
+                                .modalBarrierDismissLabel,
+                            barrierColor: Colors.black45,
+                            transitionDuration:
+                                const Duration(milliseconds: 200),
+                            pageBuilder: (BuildContext buildContext,
+                                Animation animation,
+                                Animation secondaryAnimation) {
+                              return Scaffold(
+                                body: Center(
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 10,
+                                    height:
+                                        MediaQuery.of(context).size.height - 80,
+                                    padding: EdgeInsets.all(20),
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: summaryWidgets,
+                                    ),
                                   ),
                                 ),
-                              ),
+                              );
+                            });
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(80.0)),
+                      padding: const EdgeInsets.all(0.0),
+                      child: Ink(
+                        decoration: const BoxDecoration(
+                          color: Color(0xff9747FF),
+                          borderRadius: BorderRadius.all(Radius.circular(80.0)),
+                        ),
+                        child: Container(
+                          constraints: const BoxConstraints(
+                              maxHeight: 50,
+                              minWidth: 88.0,
+                              minHeight:
+                                  36.0), // min sizes for Material buttons
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            child: const Text(
+                              'View Summary',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
                             ),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         )),
       ),
     ));
   }
 }
+
+// 9747FF
